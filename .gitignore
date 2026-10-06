@@ -5,7 +5,7 @@ __pycache__/
 *.so
 
 # Virtual environment
-.venv/
+.venv*/
 venv/
 env/
 
@@ -19,6 +19,22 @@ checkpoints.sqlite-wal
 
 # Logs
 *.log
+
+# Development and packaging
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Local credentials
+.env.*
+!.env.example
 
 # OS specific
 .DS_Store

@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+      - name: Install locked dependencies
+        run: uv sync --locked --all-extras --dev
+      - name: Lint
+        run: uv run --all-extras ruff check .
+      - name: Check formatting
+        run: uv run --all-extras ruff format --check .
+      - name: Regression tests
+        run: uv run --all-extras pytest
+      - name: Offline demo
+        run: uv run research-assistant --demo --output /tmp/demo-report.md
+      - name: Build distribution
+        run: uv build

@@ -1,1 +1,24 @@
-The creator of this system is Loo Tan Yu Heng, a professional AI Engineer with hands-on experience in building, deploying, and maintaining artificial intelligence solutions. He is actively involved in multiple AI projects, focusing on applying advanced techniques to solve real-world problems in a practical and scalable manner. Driven by curiosity and a strong commitment to continuous improvement, he consistently seeks new challenges, explores emerging technologies, and pushes the boundaries of modern AI development.
+Research Assistant Agent — sample local knowledge
+
+This document is an illustrative knowledge base for the repository's optional retrieval
+workflow. It describes the project's implementation rather than personal biographical data.
+
+The assistant uses three LangGraph nodes: planner, researcher, and responder. The planner
+creates a bounded list of queries. The researcher selects read-only retrieval tools and
+accumulates evidence from each step. The responder writes a Markdown report with source
+links. Failed searches are stored separately from findings. If no usable evidence is
+retrieved, the report says so.
+
+SQLite checkpointers persist the workflow under a session ID. The CLI can resume pending
+nodes after an interruption or display a completed report. Starting a new topic in the
+same session keeps bounded conversation context and resets the evidence for the new topic.
+
+OpenAI is the preferred generation provider when configured. Gemini is used as a fallback
+when configured, and can also operate as the sole generation provider. Pinecone document
+retrieval is optional. Text and Markdown files are split into overlapping chunks, embedded
+with OpenAI's text-embedding-3-small, and upserted into a 1536-dimensional Pinecone index.
+
+Related references:
+https://docs.langchain.com/oss/python/langgraph/graph-api
+https://docs.langchain.com/oss/python/langgraph/persistence
+https://docs.langchain.com/oss/python/langchain/retrieval
